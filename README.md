@@ -7,10 +7,10 @@ Bengine CLI is a command-line interface for managing Bengine extensions and core
 To install Bengine CLI, follow these steps:
 
 1. Clone the repository:
-   `git clone https://github.com/yourusername/bengine-cli.git`
+   `git clone git@github.com:deepwizards/bengine-cli.git`
 
 2. Navigate to the cloned directory:
-   `cd bengine`
+   `cd bengine-cli`
 
 3. Install the dependencies:
    `npm install`
