@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const axios = require('axios').default;
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -10,7 +10,7 @@ module.exports = async function deployExtension(projectName) {
     const projectDir = `bengine-${projectName}`;
     const releasesDir = '_releases';
     const benfoJsonPath = path.join(projectDir, 'benfo.json');
-    const token = 'YOUR_GITHUB_TOKEN'; // Replace with your GitHub token
+    const token = process.env.GITHUB_TOKEN;
 
     try {
         // Check if benfo.json exists
@@ -22,13 +22,13 @@ module.exports = async function deployExtension(projectName) {
         // Check if the release already exists
         const checkRelease = async () => {
             const apiUrl = `https://api.github.com/repos/deepwizards/${projectDir}/releases`;
-            const response = await fetch(apiUrl, {
+            const response = await axios.get(apiUrl, {
                 headers: {
                     'Authorization': `token ${token}`
                 }
             });
 
-            const releases = await response.json();
+            const releases = response.data;
             return releases.some(release => release.tag_name === `v${version}`);
         };
 
@@ -38,42 +38,30 @@ module.exports = async function deployExtension(projectName) {
 
         // Create Release
         const releaseUrl = `https://api.github.com/repos/deepwizards/${projectDir}/releases`;
-        const releaseResponse = await fetch(releaseUrl, {
-            method: 'POST',
+        const releaseResponse = await axios.post(releaseUrl, {
+            tag_name: `v${version}`,
+            name: `${projectName} v${version}`,
+            body: `Release of ${projectName} version ${version}`,
+            draft: false,
+            prerelease: false,
+        }, {
             headers: {
                 'Authorization': `token ${token}`,
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                tag_name: `v${version}`,
-                name: `${projectName} v${version}`,
-                body: `Release of ${projectName} version ${version}`,
-                draft: false,
-                prerelease: false,
-            }),
+            }
         });
 
-        if (!releaseResponse.ok) {
-            throw new Error(`Error creating release: ${releaseResponse.statusText}`);
-        }
-
-        const releaseData = await releaseResponse.json();
+        const releaseData = releaseResponse.data;
 
         // Upload Asset
         const uploadUrl = releaseData.upload_url.replace(/{.*}/, '');
         const zipData = await fs.readFile(zipFilePath);
-        const uploadResponse = await fetch(`${uploadUrl}?name=${zipFileName}&label=${zipFileName}`, {
-            method: 'POST',
+        await axios.post(`${uploadUrl}?name=${zipFileName}&label=${zipFileName}`, zipData, {
             headers: {
                 'Authorization': `token ${token}`,
                 'Content-Type': 'application/octet-stream',
-            },
-            body: zipData
+            }
         });
-
-        if (!uploadResponse.ok) {
-            throw new Error(`Error uploading release asset: ${uploadResponse.statusText}`);
-        }
 
         console.log(`Release v${version} for ${projectName} created and asset uploaded successfully`);
     } catch (error) {
