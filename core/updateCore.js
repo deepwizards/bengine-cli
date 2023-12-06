@@ -1,26 +1,11 @@
-// core/updateCore.js
 const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const { isBengineDeployment } = require('../shared/utils');
 
 module.exports = function updateCore() {
     console.log("Checking for Bengine core updates...");
 
     try {
-        // Determine the current working directory
-        const currentDir = process.cwd();
-        const bengineConfigFile = path.join(currentDir, 'bengine.json');
-
-        // Check if the bengine.json file exists
-        if (!fs.existsSync(bengineConfigFile)) {
-            throw new Error('No bengine.json file found. Are you in the right directory?');
-        }
-
-        // Read and parse bengine.json
-        const bengineConfig = JSON.parse(fs.readFileSync(bengineConfigFile, 'utf8'));
-        if (!bengineConfig.core) {
-            throw new Error('This directory does not seem to be a Bengine core installation.');
-        }
+        isBengineDeployment(); // Check if in a Bengine deployment directory
 
         console.log("Found Bengine core installation. Updating...");
 

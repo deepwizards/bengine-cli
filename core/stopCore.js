@@ -1,14 +1,15 @@
-// Stop the Bengine core services
-
 const { execSync } = require('child_process');
+const { isBengineDeployment } = require('../shared/utils'); // Adjust the path as necessary
 
 module.exports = function stopCore() {
-    console.log("Stop the Bengine core services...");
+    console.log("Stopping the Bengine core services...");
+
     try {
+        isBengineDeployment(); // Check if in a Bengine deployment directory
+
         execSync('npm stop', { stdio: 'inherit' });
-        console.log("stopCore complete.");
+        console.log("Bengine core services stopped successfully.");
     } catch (error) {
-        console.error("Failed to stopCore:", error);
+        console.error("Failed to stop Bengine core services:", error.message);
     }
 };
-

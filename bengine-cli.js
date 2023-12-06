@@ -7,8 +7,7 @@ const deployExtension = require('./ext/deployExtension');
 const installExtension = require('./ext/installExtension');
 const uninstallExtension = require('./ext/uninstallExtension');
 const listExtensions = require('./ext/listExtensions');
-const cloneCore = require('./core/cloneCore');
-const installCore = require('./core/installCore');
+const newCore = require('./core/newCore');
 const startCore = require('./core/startCore');
 const stopCore = require('./core/stopCore');
 const listBengineActivity = require('./core/listBengineActivity');
@@ -65,16 +64,10 @@ ext.command('ls')
 const core = program.command('core')
     .description('Manage the Bengine core functionalities');
 
-core.command('clone')
-    .description('Clone the bengine core repository')
+core.command('new')
+    .description('Download and install a new bengine core instance')
     .action(() => {
-        cloneCore();
-    });
-
-core.command('install')
-    .description('Install the Bengine core')
-    .action(() => {
-        installCore();
+        newCore();
     });
 
 core.command('update')
