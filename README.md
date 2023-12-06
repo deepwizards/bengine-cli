@@ -1,10 +1,27 @@
 # Bengine CLI
 
-Bengine CLI is a robust command-line interface for managing Bengine extensions and core functionalities. It streamlines processes such as creating, packing, deploying, installing, and uninstalling extensions, along with comprehensive management of the Bengine core.
+Bengine CLI is a command-line interface for managing Bengine extensions and core functionalities. It streamlines processes such as creating, packing, deploying, installing, and uninstalling extensions, along with basic management of the Bengine core.
+
+## Prerequisites
+
+Before installing Bengine CLI, ensure you have the following prerequisites installed:
+
+- **Node.js**: Bengine CLI is built on Node.js. If you don't have Node.js installed, download and install it from the Node.js official website: https://nodejs.org/
+
+- **Docker**: Some functionalities of Bengine CLI require Docker. Download and install Docker from the official Docker website: https://www.docker.com/get-started
+
+Ensure that both Node.js and Docker are properly installed and configured on your system by running `node -v` and `docker -v` in your command line.
 
 ## Installation
 
-To install Bengine CLI, follow these steps:
+Bengine CLI can be installed either via npm (recommended for most users) or manually for development and contribution purposes.
+
+### NPM Installation (Recommended)
+
+1. Install the Bengine CLI globally using npm:
+   `npm install bengine-cli -g`
+
+### Manual Installation
 
 1. Clone the repository:
    `git clone git@github.com:deepwizards/bengine-cli.git`
