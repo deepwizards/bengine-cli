@@ -1,46 +1,108 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
-const createExtension = require('./createExtension');
-const packExtension = require('./packExtension');
-const deployExtension = require('./deployExtension');
-const cloneCore = require('./cloneCore');
+const { program } = require('commander');
+const createExtension = require('./ext/createExtension');
+const packExtension = require('./ext/packExtension');
+const deployExtension = require('./ext/deployExtension');
+const installExtension = require('./ext/installExtension');
+const uninstallExtension = require('./ext/uninstallExtension');
+const listExtensions = require('./ext/listExtensions');
+const cloneCore = require('./core/cloneCore');
+const installCore = require('./core/installCore');
+const startCore = require('./core/startCore');
+const stopCore = require('./core/stopCore');
+const listBengineActivity = require('./core/listBengineActivity');
 
-yargs(hideBin(process.argv))
-	.command('ext new <name>', 'Create a new extension', (yargs) => {
-		yargs.positional('name', {
-			describe: 'Name of the new extension',
-			type: 'string'
-		});
-	}, (argv) => {
-		createExtension(argv.name);
-	})
-	.command('ext pack <name>', 'Pack an existing extension', (yargs) => {
-		yargs.positional('name', {
-			describe: 'Name of the extension to pack',
-			type: 'string'
-		});
-	}, (argv) => {
-		packExtension(argv.name);
-	})
-	.command('ext deploy <name>', 'Deploy an extension', (yargs) => {
-		yargs.positional('name', {
-			describe: 'Name of the extension to deploy',
-			type: 'string'
-		});
-	}, (argv) => {
-		deployExtension(argv.name);
-	})
-	.command('core new', 'Clone the bengine core repository', () => {
-		cloneCore();
-	})
-	.version() // Automatically infer the version from package.json
-	.help() // Automatically generate help text
-	.alias('version', 'v') // Allow -v as an alias for version
-	.alias('help', 'h') // Allow -h as an alias for help
-	.demandCommand(1, 'You need at least one command before moving on')
-	.recommendCommands() // Suggest similar commands if the user makes a typo
-	.strict() // Requires that one of the known commands is used
-	.showHelpOnFail(true, 'Specify --help for available options') // Show help text on failur
-	.argv;
+program
+    .version('0.0.3')
+    .description('Bengine CLI Tool - A comprehensive command-line interface for managing Bengine extensions and core functionalities.');
+
+program.command('cli update')
+.description('Update the Bengine CLI to the latest version')
+.action(() => {
+    updateCLI();
+});
+
+const ext = program.command('ext')
+    .description('Manage extensions for Bengine');
+
+ext.command('new <name>')
+    .description('Create a new extension')
+    .action((name) => {
+        createExtension(name);
+    });
+
+ext.command('pack <name>')
+    .description('Pack an existing extension')
+    .action((name) => {
+        packExtension(name);
+    });
+
+ext.command('deploy <name>')
+    .description('Deploy an extension')
+    .action((name) => {
+        deployExtension(name);
+    });
+
+ext.command('install <name>')
+    .description('Install an extension')
+    .action((name) => {
+        installExtension(name);
+    });
+
+ext.command('uninstall <name>')
+    .description('Uninstall an extension')
+    .action((name) => {
+        uninstallExtension(name);
+    });
+
+ext.command('ls')
+    .description('List all extensions and their information')
+    .action(() => {
+        listExtensions();
+    });
+
+const core = program.command('core')
+    .description('Manage the Bengine core functionalities');
+
+core.command('clone')
+    .description('Clone the bengine core repository')
+    .action(() => {
+        cloneCore();
+    });
+
+core.command('install')
+    .description('Install the Bengine core')
+    .action(() => {
+        installCore();
+    });
+
+core.command('update')
+    .description('Update the Bengine core to the latest version')
+    .action(() => {
+        updateCore();
+    });
+
+core.command('start')
+    .description('Start the Bengine core services')
+    .action(() => {
+        startCore();
+    });
+
+core.command('stop')
+    .description('Stop the Bengine core services')
+    .action(() => {
+        stopCore();
+    });
+
+core.command('ls')
+    .description('List Bengine core activities and running services')
+    .action(() => {
+        listBengineActivity();
+    });
+
+program.parse(process.argv);
+
+if (!process.argv.slice(2).length) {
+    program.outputHelp();
+}

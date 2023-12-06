@@ -1,4 +1,5 @@
-const fs = require('fs').promises;
+const fs = require('fs');
+const fsPromises = fs.promises; // Use fs.promises for async operations
 const path = require('path');
 const { exec } = require('child_process');
 const util = require('util');
@@ -17,11 +18,11 @@ module.exports = async function packExtension(projectName) {
 
     try {
         // Check if the project directory exists
-        await fs.access(projectDir);
+        await fsPromises.access(projectDir);
 
         // Function to recursively delete node_modules directories
         const deleteNodeModules = async (dir) => {
-            const entries = await fs.readdir(dir, { withFileTypes: true });
+            const entries = await fsPromises.readdir(dir, { withFileTypes: true });
             for (let entry of entries) {
                 const fullPath = path.join(dir, entry.name);
                 if (entry.isDirectory()) {
@@ -39,11 +40,11 @@ module.exports = async function packExtension(projectName) {
 
         // Read version from benfo.json
         const benfoJsonPath = path.join(projectDir, 'benfo.json');
-        const benfoJson = JSON.parse(await fs.readFile(benfoJsonPath, 'utf8'));
+        const benfoJson = JSON.parse(await fsPromises.readFile(benfoJsonPath, 'utf8'));
         const version = benfoJson.version || '0.0.1';
 
         // Create the project release directory if it doesn't exist
-        await fs.mkdir(projectReleaseDir, { recursive: true });
+        await fsPromises.mkdir(projectReleaseDir, { recursive: true });
 
         // Create a zip file of the project directory
         const zipFileName = `${projectDir}-v${version}.zip`;
