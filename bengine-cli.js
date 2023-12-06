@@ -13,7 +13,7 @@ const stopCore = require('./core/stopCore');
 const listBengineActivity = require('./core/listBengineActivity');
 
 program
-    .version('0.0.3')
+    .version('Bengine CLI: v' + require('./package.json').version, '-v, --version')
     .description('Bengine CLI Tool - A comprehensive command-line interface for managing Bengine extensions and core functionalities.');
 
 program.command('cli update')
