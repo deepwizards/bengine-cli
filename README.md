@@ -1,6 +1,6 @@
 # Bengine CLI
 
-Bengine CLI is a command-line interface for managing Bengine extensions and core functionalities. This tool simplifies tasks such as creating, packing, deploying extensions, and cloning the Bengine core repository.
+Bengine CLI is a robust command-line interface for managing Bengine extensions and core functionalities. It streamlines processes such as creating, packing, deploying, installing, and uninstalling extensions, along with comprehensive management of the Bengine core.
 
 ## Installation
 
@@ -12,63 +12,87 @@ To install Bengine CLI, follow these steps:
 2. Navigate to the cloned directory:
    `cd bengine-cli`
 
-3. Install the dependencies:
+3. Install dependencies:
    `npm install`
 
-4. Link the CLI for global usage:
+4. Link the CLI for global use:
    `npm link`
 
 ## Usage
 
-Once installed, you can use the `bengine` command to perform various operations. Below are the available commands:
+Once installed, the `bengine` command is available for various operations.
 
-### Creating a New Extension
+### Extension Management
 
-To create a new extension:
+- **Create a New Extension**:
+  - Command: `bengine ext new <extension-name>`
+  - Description: Initializes a new extension with the given name, creating a directory and the necessary boilerplate files.
 
-`bengine ext new <extension-name>`
+- **Pack an Extension**:
+  - Command: `bengine ext pack <extension-name>`
+  - Description: Compresses the specified extension into a zip file for distribution, placing it in the `_releases` directory.
 
-This command creates a new directory for the extension with all the necessary files and structure.
+- **Deploy an Extension**:
+  - Command: `bengine ext deploy <extension-name>`
+  - Description: Deploys the specified extension to a remote server or repository, typically for distribution or testing.
 
-### Packing an Extension
+- **Install an Extension**:
+  - Command: `bengine ext install <extension-name>`
+  - Description: Installs an extension into your Bengine environment, making it available for use.
 
-To pack an existing extension:
+- **Uninstall an Extension**:
+  - Command: `bengine ext uninstall <extension-name>`
+  - Description: Removes an installed extension from your Bengine environment.
 
-`bengine ext pack <extension-name>`
+- **List All Extensions**:
+  - Command: `bengine ext ls`
+  - Description: Displays a list of all currently installed extensions, along with their version and status.
 
-This command packs the specified extension into a zip file and places it in the `_releases` directory.
+### Core Management
 
-### Deploying an Extension
+- **Clone the Bengine Core**:
+  - Command: `bengine core clone`
+  - Description: Clones the Bengine core repository to your local machine for development or customization.
 
-To deploy an extension:
+- **Install the Bengine Core**:
+  - Command: `bengine core install`
+  - Description: Installs the Bengine core components, setting up the necessary environment and dependencies.
 
-`bengine ext deploy <extension-name>`
+- **Update the Bengine Core**:
+  - Command: `bengine core update`
+  - Description: Updates the Bengine core to the latest version, pulling changes from the central repository.
 
-This command deploys the specified extension to the GitHub repository under the specified version.
+- **Start Bengine Core Services**:
+  - Command: `bengine core start`
+  - Description: Starts the core Bengine services, initiating any background processes or servers.
 
-### Cloning the Bengine Core
+- **Stop Bengine Core Services**:
+  - Command: `bengine core stop`
+  - Description: Stops all running Bengine core services, effectively shutting down the Bengine environment.
 
-To clone the Bengine core repository:
+- **List Bengine Core Activities**:
+  - Command: `bengine core ls`
+  - Description: Lists all active Bengine core processes and services, providing a snapshot of the current system state.
 
-`bengine core new`
+### CLI Updates
 
-This command clones the Bengine core repository to your local machine.
+- **Update the Bengine CLI**:
+  - Command: `bengine cli update`
+  - Description: Updates the Bengine CLI tool to the latest version, ensuring access to the latest features and fixes.
 
-### Getting Help
+### General Commands
 
-For help and a list of available commands:
+- **Get Help**:
+  - Command: `bengine --help`
+  - Description: Displays help information, listing all commands and their brief descriptions.
 
-`bengine --help`
-
-### Checking the Version
-
-To check the current version of Bengine CLI:
-
-`bengine --version`
+- **Check CLI Version**:
+  - Command: `bengine --version`
+  - Description: Displays the current version of the Bengine CLI.
 
 ## Contributing
 
-Contributions to the Bengine CLI are welcome. Please follow the standard GitHub pull request process to submit your changes.
+Contributions to Bengine CLI are welcome. Please follow the standard GitHub pull request process to submit your changes.
 
 ## Support and Queries
 
