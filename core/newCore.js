@@ -1,7 +1,7 @@
 const { execSync } = require('child_process');
 const readlineSync = require('readline-sync'); // Ensure this dependency is installed
 const fs = require('fs');
-const path = require('path');
+const mongoose = require('mongoose');
 
 module.exports = function cloneCore() {
     try {

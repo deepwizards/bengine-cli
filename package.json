@@ -1,6 +1,6 @@
 {
     "name": "bengine-cli",
-    "version": "0.0.3-alpha",
+    "version": "0.0.4-alpha",
     "description": "CLI for bengine operations",
     "main": "bengine-cli.js",
     "scripts": {
@@ -10,6 +10,7 @@
         "archiver": "^6.0.1",
         "axios": "^1.6.2",
         "commander": "^11.1.0",
+        "mongoose": "^8.0.3",
         "readline-sync": "^1.4.10"
     },
     "bin": {
