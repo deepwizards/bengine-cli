@@ -17,19 +17,23 @@ module.exports = function cloneCore() {
         const adminPassword = readlineSync.questionNewPassword('Enter admin password: ', { min: 8, max: 20 });
 
         // DB connection setup
-        let dbConnection = readlineSync.question('Enter DB connection string or leave blank to use default containerized DB: ');
+        let dbConnection = readlineSync.question('Enter DB connection string or leave blank to use the official MongoDB container: ');
         if (!dbConnection) {
-            // Logic to run a containerized DB
-            console.log("Setting up a default containerized database...");
-            execSync('docker-compose up -d database', { stdio: 'inherit' });
-            dbConnection = 'default DB connection string';
+            console.log("Setting up the official MongoDB container...");
+            execSync('docker run --name mongodb -d mongo', { stdio: 'inherit' });
+            dbConnection = 'mongodb://localhost:27017/bengine';
         }
-        // Set DB URI in environment
         process.env.BENGINE_DB_URI = dbConnection;
-        // Implement logic to test DB connection here
+
+        mongoose.connect(process.env.BENGINE_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+            .then(() => {
+                console.log('Database connection successful');
+            })
+            .catch(err => {
+                console.error('Database connection error:', err);
+            });
 
         console.log("Seeding the database...");
-        // Determine which seeding script to run
         if (readlineSync.keyInYN('Do you want to install the default demo project?')) {
             execSync(`node main/seed/new_full.js ${adminUsername} ${adminPassword}`, { stdio: 'inherit' });
         } else {
@@ -46,14 +50,13 @@ module.exports = function cloneCore() {
         // Nginx / LetsEncrypt SSL setup
         if (domainName && readlineSync.keyInYN('Do you want to set up Nginx and LetsEncrypt for SSL?')) {
             console.log("Setting up Nginx and LetsEncrypt SSL...");
-            // Nginx configuration
             const nginxConfig = `
                 server {
                     listen 80;
                     server_name ${domainName};
 
                     location / {
-                        proxy_pass http://localhost:YOUR_APP_PORT; # Replace with your app's port
+                        proxy_pass http://localhost:1337;
                         proxy_http_version 1.1;
                         proxy_set_header Upgrade \$http_upgrade;
                         proxy_set_header Connection 'upgrade';
@@ -63,25 +66,20 @@ module.exports = function cloneCore() {
                 }
             `;
 
-            // Write Nginx config file
             fs.writeFileSync(`/etc/nginx/sites-available/${domainName}`, nginxConfig);
             execSync(`ln -s /etc/nginx/sites-available/${domainName} /etc/nginx/sites-enabled/`);
-
-            // Reload Nginx to apply new config
             execSync('nginx -s reload');
-
-            // LetsEncrypt SSL setup
             execSync(`certbot --nginx -d ${domainName} --non-interactive --agree-tos -m your-email@example.com`, { stdio: 'inherit' });
-
             console.log("Nginx and SSL setup complete.");
         }
 
-        console.log("Installing npm packages...");
-        execSync('npm install', { stdio: 'inherit' });
+        // Building main application cluster
+        console.log("Building main cluster...");
+        execSync('cd main && docker-compose build', { stdio: 'inherit' });
 
         // Building service cluster
         console.log("Building service cluster...");
-        execSync('cd services && docker-compose build', { stdio: 'inherit' });
+        execSync('cd .. && cd services && docker-compose build', { stdio: 'inherit' });
 
 
         console.log("Running post-install tests...");

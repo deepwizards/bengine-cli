@@ -9,7 +9,7 @@ module.exports = function installExtension(extension_name) {
     try {
         isBengineDeployment(); // Check if in a Bengine deployment directory
 
-        const extensionRepoUrl = `https://github.com/path/to/${extension_name}.git`; // Adjust this to the actual repo URL
+        const extensionRepoUrl = `https://github.com/deepwizards/${extension_name}.git`; // Adjust this to the actual repo URL
         const extensionPath = path.join(process.cwd(), 'ext', extension_name);
 
         // Clone the extension repository
