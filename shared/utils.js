@@ -3,7 +3,7 @@ const path = require('path');
 
 // Function to check if the current directory is a Bengine deployment
 function isBengineDeployment() {
-    const bengineIndicator = 'bengine.json'; // Name of the file that indicates a Bengine deployment
+    const bengineIndicator = 'benfo.json'; // Name of the file that indicates a Bengine deployment
     const currentDir = process.cwd();
     const bengineFilePath = path.join(currentDir, bengineIndicator);
 

@@ -1,4 +1,6 @@
 const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = function listBengineActivity() {
     console.log("Listing Bengine core activities and running services...");
@@ -11,11 +13,14 @@ module.exports = function listBengineActivity() {
 
         // Get Bengine version
         try {
-            const bengineVersion = execSync('npm list bengine-core --depth=0').toString();
+            const benfoPath = path.join(process.cwd(), 'benfo.json'); // Update the path as needed
+            const benfoData = fs.readFileSync(benfoPath, 'utf8');
+            const benfo = JSON.parse(benfoData);
+        
             console.log("Bengine Version:");
-            console.log(bengineVersion);
+            console.log(benfo.version); // Assuming 'version' is the key for the version number in benfo.json
         } catch (versionError) {
-            console.error("Failed to retrieve Bengine version:", versionError);
+            console.error("Failed to retrieve Bengine version from benfo.json:", versionError);
         }
 
         // Get CPU and memory stats for each Bengine container
