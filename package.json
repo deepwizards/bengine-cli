@@ -1,6 +1,6 @@
 {
     "name": "@deepwizards/bengine-cli",
-    "version": "0.0.5",
+    "version": "0.0.1",
     "description": "CLI for bengine operations",
     "main": "bengine-cli.js",
     "scripts": {
