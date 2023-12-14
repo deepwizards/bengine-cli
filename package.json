@@ -1,6 +1,6 @@
 {
     "name": "bengine-cli",
-    "version": "0.0.4-alpha",
+    "version": "0.0.5",
     "description": "CLI for bengine operations",
     "main": "bengine-cli.js",
     "scripts": {
@@ -10,16 +10,22 @@
     "dependencies": {
         "archiver": "^6.0.1",
         "axios": "^1.6.2",
-        "chai": "^4.3.10",
         "commander": "^11.1.0",
         "js-yaml": "^4.1.0",
-        "mocha": "^10.2.0",
         "mongoose": "^8.0.3",
         "net": "^1.0.2",
-        "readline": "^1.3.0",
         "readline-sync": "^1.4.10"
     },
     "bin": {
         "bengine": "./bengine-cli.js"
+    },
+    "devDependencies": {
+        "chai": "^4.3.10",
+        "mocha": "^10.2.0",
+        "@semantic-release/commit-analyzer": "^11.1.0",
+        "@semantic-release/github": "^9.2.5",
+        "@semantic-release/npm": "^11.0.2",
+        "@semantic-release/release-notes-generator": "^12.1.0",
+        "semantic-release": "^22.0.12"
     }
 }
