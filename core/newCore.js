@@ -3,6 +3,7 @@ const readlineSync = require('readline-sync');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
+const yaml = require('js-yaml');
 
 function isPortInUse(port) {
     try {
@@ -57,16 +58,34 @@ async function setupDatabaseConnection() {
 }
 
 async function determineDbConnection() {
-    if (await checkExistingMongoDB() || await checkExistingDockerContainer()) {
-        return 'mongodb://localhost:27017/__bengine';
+    if (await checkExistingMongoDB()) {
+        const localIpAddress = readlineSync.question('Enter your local IP address: ');
+        return `mongodb://${localIpAddress}:27017/__bengine`;
+    } else if (await checkExistingDockerContainer()) {
+        addMongoToDockerCompose();
+        return 'mongodb://bengine-mongo:27017/__bengine';
     }
 
     if (readlineSync.keyInYN('Set up a new MongoDB container?')) {
-        execSync('docker run --name mongodb -d -p 27017:27017 mongo', { stdio: 'inherit' });
-        return 'mongodb://localhost:27017/__bengine';
+        addMongoToDockerCompose();
+        return 'mongodb://bengine-mongo:27017/__bengine';
     }
 
     return readlineSync.question('Enter MongoDB connection string: ');
+}
+
+function addMongoToDockerCompose() {
+    const dockerComposePath = path.join(process.cwd(), '/main/docker-compose.yml');
+    let dockerCompose = yaml.load(fs.readFileSync(dockerComposePath, 'utf8'));
+
+    dockerCompose.services = dockerCompose.services || {};
+    dockerCompose.services['bengine-mongo'] = {
+        image: 'mongo',
+        ports: ['27017:27017']
+    };
+
+    fs.writeFileSync(dockerComposePath, yaml.dump(dockerCompose), 'utf8');
+    console.log('Added bengine-mongo service to docker-compose.yml.');
 }
 
 // function setupAdminAccount() {

@@ -4,12 +4,16 @@
     "description": "CLI for bengine operations",
     "main": "bengine-cli.js",
     "scripts": {
-        "start": "node bengine-cli.js"
+        "start": "node bengine-cli.js",
+        "test": "mocha"
     },
     "dependencies": {
         "archiver": "^6.0.1",
         "axios": "^1.6.2",
+        "chai": "^4.3.10",
         "commander": "^11.1.0",
+        "js-yaml": "^4.1.0",
+        "mocha": "^10.2.0",
         "mongoose": "^8.0.3",
         "net": "^1.0.2",
         "readline": "^1.3.0",
