@@ -3,12 +3,9 @@
     "plugins": [
         "@semantic-release/commit-analyzer",
         "@semantic-release/release-notes-generator",
-        "@semantic-release/npm",
-        {
-            "path": "@semantic-release/github",
-            "assets": [
-                {"path": "build/package.zip", "label": "Build Artifacts"}
-            ]
-        }
+        "@semantic-release/changelog",
+        "@semantic-release/git",
+        "@semantic-release/github",
+        "@semantic-release/npm"
     ]
 }
