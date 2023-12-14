@@ -5,7 +5,8 @@
     "main": "bengine-cli.js",
     "scripts": {
         "start": "node bengine-cli.js",
-        "test": "mocha"
+        "test": "mocha",
+        "push": "node autoCommit.js"
     },
     "dependencies": {
         "archiver": "^6.0.1",
