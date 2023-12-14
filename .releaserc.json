@@ -6,6 +6,11 @@
         "@semantic-release/changelog",
         "@semantic-release/git",
         "@semantic-release/github",
-        "@semantic-release/npm"
+        {
+            "path": "@semantic-release/npm",
+            "npmPublish": true,
+            "tarballDir": "dist",
+            "access": "public"
+        }
     ]
 }
