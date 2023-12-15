@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/deepwizards/bengine-cli/compare/v1.0.0...v1.1.0) (2023-12-15)
+
+
+### Features
+
+* Add core/deployCore.js, core/seedCore.js, and update core/newCore.js and package.json ([a92ed12](https://github.com/deepwizards/bengine-cli/commit/a92ed1269cdccf88a0e9424f59444054638413e8))
+
 # 1.0.0 (2023-12-14)
 
 
